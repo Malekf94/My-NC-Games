@@ -30,11 +30,6 @@ exports.updateReview = (review_id, inc_votes) => {
 					status: 404,
 					msg: `No review found`,
 				});
-			} else if (rows[0].votes < 0) {
-				return Promise.reject({
-					status: 400,
-					msg: `Not possible to have votes below 0`,
-				});
 			} else return rows[0];
 		});
 };
