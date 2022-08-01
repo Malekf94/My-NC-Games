@@ -66,3 +66,58 @@ describe("GET /api/reviews/:review_id", () => {
 			});
 	});
 });
+
+describe("PATCH /api/reviews/:review_id", () => {
+	test("updates the vote count by adding if inc_votes is positive and returns the updated review", () => {
+		return request(app)
+			.patch("/api/reviews/1")
+			.send({ inc_votes: 5 })
+			.then(({ body }) => {
+				expect(body.review.votes).toBe(6);
+			});
+	});
+	test("updates the vote count by subtraction if inc_votes is negatives and returns the updated review", () => {
+		return request(app)
+			.patch("/api/reviews/1")
+			.send({ inc_votes: -1 })
+			.then(({ body }) => {
+				expect(body.review.votes).toBe(0);
+			});
+	});
+	test("when given a review_id that's too high, return an appropriate error", () => {
+		return request(app)
+			.patch("/api/reviews/90")
+			.send({ inc_votes: 5 })
+			.expect(404)
+			.then(({ _body }) => {
+				expect(_body.msg).toBe("No review found");
+			});
+	});
+	test("when given an invalid review_id, return an appropriate error", () => {
+		return request(app)
+			.patch("/api/reviews/banana")
+			.send({ inc_votes: 5 })
+			.expect(400)
+			.then(({ _body }) => {
+				expect(_body.msg).toBe("Bad Request!");
+			});
+	});
+	test("when given an invalid inc_votes input, return an appropriate error", () => {
+		return request(app)
+			.patch("/api/reviews/banana")
+			.send({ inc_votes: "apple" })
+			.expect(400)
+			.then(({ _body }) => {
+				expect(_body.msg).toBe("Bad Request!");
+			});
+	});
+	test("when given a review_id that's too high, return an appropriate error", () => {
+		return request(app)
+			.patch("/api/reviews/1")
+			.send({ inc_votes: -10 })
+			.expect(400)
+			.then(({ _body }) => {
+				expect(_body.msg).toBe("Not possible to have votes below 0");
+			});
+	});
+});
