@@ -12,7 +12,7 @@ exports.fetchReview = (review_id) => {
 			if (rows[0] === undefined) {
 				return Promise.reject({
 					status: 404,
-					msg: `No review found for review_id:${review_id}`,
+					msg: `No review found`,
 				});
 			} else return rows[0];
 		});

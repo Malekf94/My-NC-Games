@@ -32,15 +32,21 @@ describe("GET /api/reviews/:review_id", () => {
 			.get("/api/reviews/1")
 			.expect(200)
 			.then(({ body }) => {
-				expect(body.review).toHaveProperty("review_id");
-				expect(body.review).toHaveProperty("title");
-				expect(body.review).toHaveProperty("review_body");
-				expect(body.review).toHaveProperty("designer");
-				expect(body.review).toHaveProperty("review_img_url");
-				expect(body.review).toHaveProperty("votes");
-				expect(body.review).toHaveProperty("category");
-				expect(body.review).toHaveProperty("owner");
-				expect(body.review).toHaveProperty("created_at");
+				expect(body.review).toHaveProperty("review_id", 1);
+				expect(body.review).toHaveProperty("title", "Agricola");
+				expect(body.review).toHaveProperty("review_body", "Farmyard fun!");
+				expect(body.review).toHaveProperty("designer", "Uwe Rosenberg");
+				expect(body.review).toHaveProperty(
+					"review_img_url",
+					"https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png"
+				);
+				expect(body.review).toHaveProperty("votes", 1);
+				expect(body.review).toHaveProperty("category", "euro game");
+				expect(body.review).toHaveProperty("owner", "mallionaire");
+				expect(body.review).toHaveProperty(
+					"created_at",
+					"2021-01-18T10:00:20.514Z"
+				);
 			});
 	});
 	test("when given a review_id that's too high, return an appropriate error", () => {
@@ -48,7 +54,7 @@ describe("GET /api/reviews/:review_id", () => {
 			.get("/api/reviews/90")
 			.expect(404)
 			.then(({ _body }) => {
-				expect(_body.msg).toBe("No review found for review_id:90");
+				expect(_body.msg).toBe("No review found");
 			});
 	});
 	test("when given an invalid review_id, return an appropriate error", () => {
@@ -56,10 +62,7 @@ describe("GET /api/reviews/:review_id", () => {
 			.get("/api/reviews/banana")
 			.expect(400)
 			.then(({ _body }) => {
-				console.log(_body);
-				expect(_body.msg).toBe(
-					'invalid input syntax for type integer: "banana"'
-				);
+				expect(_body.msg).toBe("Bad Request");
 			});
 	});
 });
