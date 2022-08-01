@@ -25,3 +25,41 @@ describe("Get /api/categories", () => {
 			});
 	});
 });
+
+describe("GET /api/reviews/:review_id", () => {
+	test("a review object, which should have the following properties: review_id,title,review_body,designer,review_img_url,votes, category, owner and created_at", () => {
+		return request(app)
+			.get("/api/reviews/1")
+			.expect(200)
+			.then(({ body }) => {
+				expect(body.review).toHaveProperty("review_id");
+				expect(body.review).toHaveProperty("title");
+				expect(body.review).toHaveProperty("review_body");
+				expect(body.review).toHaveProperty("designer");
+				expect(body.review).toHaveProperty("review_img_url");
+				expect(body.review).toHaveProperty("votes");
+				expect(body.review).toHaveProperty("category");
+				expect(body.review).toHaveProperty("owner");
+				expect(body.review).toHaveProperty("created_at");
+			});
+	});
+	test("when given a review_id that's too high, return an appropriate error", () => {
+		return request(app)
+			.get("/api/reviews/90")
+			.expect(404)
+			.then(({ _body }) => {
+				expect(_body.msg).toBe("No review found for review_id:90");
+			});
+	});
+	test("when given an invalid review_id, return an appropriate error", () => {
+		return request(app)
+			.get("/api/reviews/banana")
+			.expect(400)
+			.then(({ _body }) => {
+				console.log(_body);
+				expect(_body.msg).toBe(
+					'invalid input syntax for type integer: "banana"'
+				);
+			});
+	});
+});
