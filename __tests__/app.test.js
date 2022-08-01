@@ -66,3 +66,73 @@ describe("GET /api/reviews/:review_id", () => {
 			});
 	});
 });
+
+describe("PATCH /api/reviews/:review_id", () => {
+	test("updates the vote count by adding if inc_votes is positive and returns the updated review", () => {
+		return request(app)
+			.patch("/api/reviews/1")
+			.send({ inc_votes: 5 })
+			.then(({ body }) => {
+				const expected = {
+					review_id: 1,
+					title: "Agricola",
+					category: "euro game",
+					designer: "Uwe Rosenberg",
+					owner: "mallionaire",
+					review_body: "Farmyard fun!",
+					review_img_url:
+						"https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+					created_at: "2021-01-18T10:00:20.514Z",
+					votes: 6,
+				};
+				expect(body.review).toEqual(expected);
+			});
+	});
+	test("updates the vote count by subtraction if inc_votes is negatives and returns the updated review", () => {
+		return request(app)
+			.patch("/api/reviews/1")
+			.send({ inc_votes: -1 })
+			.then(({ body }) => {
+				const expected = {
+					review_id: 1,
+					title: "Agricola",
+					category: "euro game",
+					designer: "Uwe Rosenberg",
+					owner: "mallionaire",
+					review_body: "Farmyard fun!",
+					review_img_url:
+						"https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+					created_at: "2021-01-18T10:00:20.514Z",
+					votes: 0,
+				};
+				expect(body.review).toEqual(expected);
+			});
+	});
+	test("when given a review_id that's too high, return an appropriate error", () => {
+		return request(app)
+			.patch("/api/reviews/90")
+			.send({ inc_votes: 5 })
+			.expect(404)
+			.then(({ _body }) => {
+				expect(_body.msg).toBe("No review found");
+			});
+	});
+	test("when given an invalid review_id, return an appropriate error", () => {
+		return request(app)
+			.patch("/api/reviews/banana")
+			.send({ inc_votes: 5 })
+			.expect(400)
+			.then(({ _body }) => {
+				expect(_body.msg).toBe("Bad Request!");
+			});
+	});
+	test("when given an invalid inc_votes input, return an appropriate error", () => {
+		return request(app)
+			.patch("/api/reviews/banana")
+			.send({ inc_votes: "apple" })
+			.expect(400)
+			.then(({ _body }) => {
+				expect(_body.msg).toBe("Bad Request!");
+			});
+	});
+});
