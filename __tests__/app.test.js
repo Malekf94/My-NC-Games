@@ -62,7 +62,7 @@ describe("GET /api/reviews/:review_id", () => {
 			.get("/api/reviews/banana")
 			.expect(400)
 			.then(({ _body }) => {
-				expect(_body.msg).toBe("Bad Request");
+				expect(_body.msg).toBe("Bad Request!");
 			});
 	});
 });
