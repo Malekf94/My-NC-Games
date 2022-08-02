@@ -27,3 +27,7 @@ added the get /api/users endpoint and tested it to confirm it returns the correc
 ### GET /api/reviews/:review_id
 
 refactored the endpoint to have the result include the key 'comment_count'
+
+### GET /api/reviews
+
+added the get /api/reviews endpoint and tested it to confirm it returns the correct values, also refactored the naming for controller and model for GET /api/reviews/:review_id to avoid confusion

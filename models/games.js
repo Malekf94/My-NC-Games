@@ -1,11 +1,12 @@
 const db = require("../db/connection");
+
 exports.fetchCategories = () => {
 	return db.query("SELECT * from categories").then(({ rows }) => {
 		return rows;
 	});
 };
 
-exports.fetchReview = (review_id) => {
+exports.fetchReviewById = (review_id) => {
 	return db
 		.query(`SELECT * from reviews WHERE review_id=$1`, [review_id])
 		.then(({ rows }) => {
@@ -47,4 +48,28 @@ exports.fetchUsers = () => {
 	return db.query("SELECT * from users").then(({ rows }) => {
 		return rows;
 	});
+};
+
+exports.fetchReviews = () => {
+	return db
+		.query("SELECT * from reviews ORDER BY created_at DESC")
+		.then(({ rows }) => {
+			rows.forEach((row) => {
+				row.comment_count = 0;
+			});
+			return rows;
+		})
+		.then((body) => {
+			const reviews = body;
+			return db.query(`SELECT * from comments`).then(({ rows }) => {
+				rows.forEach((row) => {
+					for (let i = 0; i < reviews.length; i++) {
+						if (row.review_id === reviews[i].review_id) {
+							reviews[i].comment_count++;
+						}
+					}
+				});
+				return reviews;
+			});
+		});
 };
