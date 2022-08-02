@@ -143,7 +143,6 @@ describe("GET /api/users", () => {
 			.get("/api/users")
 			.expect(200)
 			.then(({ body }) => {
-				console.log(body);
 				const expected = ["username", "name", "avatar_url"];
 				body["users"].forEach((user) => {
 					expect(Object.keys(user)).toEqual(expect.arrayContaining(expected));
