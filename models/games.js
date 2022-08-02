@@ -1,11 +1,12 @@
 const db = require("../db/connection");
+
 exports.fetchCategories = () => {
 	return db.query("SELECT * from categories").then(({ rows }) => {
 		return rows;
 	});
 };
 
-exports.fetchReview = (review_id) => {
+exports.fetchReviewById = (review_id) => {
 	return db
 		.query(`SELECT * from reviews WHERE review_id=$1`, [review_id])
 		.then(({ rows }) => {
@@ -47,4 +48,14 @@ exports.fetchUsers = () => {
 	return db.query("SELECT * from users").then(({ rows }) => {
 		return rows;
 	});
+};
+
+exports.fetchReviews = () => {
+	return db
+		.query(
+			"SELECT reviews.*, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments ON reviews.review_id=comments.review_id GROUP BY reviews.review_id ORDER BY reviews.created_at DESC"
+		)
+		.then(({ rows }) => {
+			return rows;
+		});
 };

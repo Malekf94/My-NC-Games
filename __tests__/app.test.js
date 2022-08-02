@@ -158,3 +158,49 @@ describe("GET /api/users", () => {
 			});
 	});
 });
+
+describe("GET /api/reviews", () => {
+	test("a reviews array of review objects, each of which should have the following properties:	owner (which is the username from the users table), title, review_id, category, review_img_url, created_at, votes, designer and comment_count", () => {
+		return request(app)
+			.get("/api/reviews")
+			.expect(200)
+			.then(({ body }) => {
+				const expected = [
+					"owner",
+					"title",
+					"review_id",
+					"category",
+					"review_img_url",
+					"created_at",
+					"votes",
+					"designer",
+					"comment_count",
+				];
+				body["reviews"].forEach((review) => {
+					expect(Object.keys(review)).toEqual(expect.arrayContaining(expected));
+				});
+			});
+	});
+	test("the array should be ordered by date created at in descending order", () => {
+		return request(app)
+			.get("/api/reviews")
+			.expect(200)
+			.then(({ body }) => {
+				const expected = {
+					review_id: 7,
+					title: "Mollit elit qui incididunt veniam occaecat cupidatat",
+					category: "social deduction",
+					designer: "Avery Wunzboogerz",
+					owner: "mallionaire",
+					review_body:
+						"Consectetur incididunt aliquip sunt officia. Magna ex nulla consectetur laboris incididunt ea non qui. Enim id eiusmod irure dolor ipsum in tempor consequat amet ullamco. Occaecat fugiat sint fugiat mollit consequat pariatur consequat non exercitation dolore. Labore occaecat in magna commodo anim enim eiusmod eu pariatur ad duis magna. Voluptate ad et dolore ullamco anim sunt do. Qui exercitation tempor in in minim ullamco fugiat ipsum. Duis irure voluptate cupidatat do id mollit veniam culpa. Velit deserunt exercitation amet laborum nostrud dolore in occaecat minim amet nostrud sunt in. Veniam ut aliqua incididunt commodo sint in anim duis id commodo voluptate sit quis.",
+					review_img_url:
+						"https://images.pexels.com/photos/278888/pexels-photo-278888.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+					created_at: "2021-01-25T11:16:54.963Z",
+					votes: 9,
+					comment_count: "0",
+				};
+				expect(body.reviews[0]).toEqual(expected);
+			});
+	});
+});

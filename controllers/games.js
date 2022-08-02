@@ -1,9 +1,10 @@
 const users = require("../db/data/test-data/users");
 const {
 	fetchCategories,
-	fetchReview,
+	fetchReviewById,
 	updateReview,
 	fetchUsers,
+	fetchReviews,
 } = require("../models/games");
 
 exports.getCategories = (req, res, next) => {
@@ -12,9 +13,9 @@ exports.getCategories = (req, res, next) => {
 	});
 };
 
-exports.getReview = (req, res, next) => {
+exports.getReviewById = (req, res, next) => {
 	const { review_id } = req.params;
-	fetchReview(review_id)
+	fetchReviewById(review_id)
 		.then((review) => {
 			res.status(200).send({ review });
 		})
@@ -38,5 +39,11 @@ exports.patchReview = (req, res, next) => {
 exports.getUsers = (req, res, next) => {
 	fetchUsers().then((users) => {
 		res.status(200).send({ users });
+	});
+};
+
+exports.getReviews = (req, res, next) => {
+	fetchReviews().then((reviews) => {
+		res.status(200).send({ reviews });
 	});
 };
