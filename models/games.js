@@ -76,8 +76,8 @@ exports.fetchReviewCommentsById = (review_id) => {
 		.then(({ rows }) => {
 			if (rows.length === 0) {
 				return Promise.reject({
-					status: 404,
-					msg: `No comment found`,
+					status: 200,
+					msg: `No comment related`,
 				});
 			} else return rows;
 		});

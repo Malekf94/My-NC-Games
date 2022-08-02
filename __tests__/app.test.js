@@ -243,9 +243,9 @@ describe("GET /api/review/:review_id/comments", () => {
 	test("if a valid review_id has no comments, return an appropriate response", () => {
 		return request(app)
 			.get("/api/reviews/1/comments")
-			.expect(404)
+			.expect(200)
 			.then(({ body }) => {
-				expect(body.msg).toBe("No comment found");
+				expect(body.msg).toBe("No comment related");
 			});
 	});
 	test("if given a review_id that's too high, return an appropriate response", () => {
