@@ -128,7 +128,7 @@ describe("PATCH /api/reviews/:review_id", () => {
 	});
 	test("when given an invalid inc_votes input, return an appropriate error", () => {
 		return request(app)
-			.patch("/api/reviews/banana")
+			.patch("/api/reviews/1")
 			.send({ inc_votes: "apple" })
 			.expect(400)
 			.then(({ _body }) => {
