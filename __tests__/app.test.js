@@ -198,7 +198,7 @@ describe("GET /api/reviews", () => {
 						"https://images.pexels.com/photos/278888/pexels-photo-278888.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
 					created_at: "2021-01-25T11:16:54.963Z",
 					votes: 9,
-					comment_count: 0,
+					comment_count: "0",
 				};
 				expect(body.reviews[0]).toEqual(expected);
 			});

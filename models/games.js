@@ -50,26 +50,39 @@ exports.fetchUsers = () => {
 	});
 };
 
+// exports.fetchReviews = () => {
+// 	return db
+// 		.query(
+// 			"SELECT * FROM comments RIGHT JOIN reviews ON comments.review_id=reviews.review_id"
+// 		)
+// 		.then(({ rows }) => {
+// 			rows.forEach((row) => {
+// 				row.comment_count = 0;
+// 			});
+// 			console.log(rows);
+// 			return rows;
+// 		})
+// 		.then((body) => {
+// 			const reviews = body;
+// 			return db.query(`SELECT * from comments`).then(({ rows }) => {
+// 				rows.forEach((row) => {
+// 					for (let i = 0; i < reviews.length; i++) {
+// 						if (row.review_id === reviews[i].review_id) {
+// 							reviews[i].comment_count++;
+// 						}
+// 					}
+// 				});
+// 				return reviews;
+// 			});
+// 		});
+// };
+
 exports.fetchReviews = () => {
 	return db
-		.query("SELECT * from reviews ORDER BY created_at DESC")
+		.query(
+			"SELECT reviews.*, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments ON reviews.review_id=comments.review_id GROUP BY reviews.review_id ORDER BY reviews.created_at DESC"
+		)
 		.then(({ rows }) => {
-			rows.forEach((row) => {
-				row.comment_count = 0;
-			});
 			return rows;
-		})
-		.then((body) => {
-			const reviews = body;
-			return db.query(`SELECT * from comments`).then(({ rows }) => {
-				rows.forEach((row) => {
-					for (let i = 0; i < reviews.length; i++) {
-						if (row.review_id === reviews[i].review_id) {
-							reviews[i].comment_count++;
-						}
-					}
-				});
-				return reviews;
-			});
 		});
 };
