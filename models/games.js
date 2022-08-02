@@ -59,3 +59,30 @@ exports.fetchReviews = () => {
 			return rows;
 		});
 };
+
+exports.fetchReviewCommentsById = (review_id) => {
+	const valid_id = db
+		.query(`SELECT * from reviews WHERE review_id=$1`, [review_id])
+		.then(({ rows }) => {
+			if (rows[0] === undefined) {
+				return Promise.reject({
+					status: 404,
+					msg: `No review found`,
+				});
+			} else return rows[0];
+		});
+	const comment = db
+		.query(`SELECT * from comments WHERE review_id=$1`, [review_id])
+		.then(({ rows }) => {
+			if (rows.length === 0) {
+				return Promise.reject({
+					status: 404,
+					msg: `No comment found`,
+				});
+			} else return rows;
+		});
+
+	return Promise.all([valid_id, comment]).then((values) => {
+		return values[1];
+	});
+};

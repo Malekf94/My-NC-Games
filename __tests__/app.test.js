@@ -204,3 +204,64 @@ describe("GET /api/reviews", () => {
 			});
 	});
 });
+
+describe("GET /api/review/:review_id/comments", () => {
+	test("Responds with an array of comments for the given review_id of which each comment should have the following properties: comment_id,votes,created_at,author,body,review_id", () => {
+		return request(app)
+			.get("/api/reviews/2/comments")
+			.expect(200)
+			.then(({ body }) => {
+				const expected = [
+					{
+						comment_id: 1,
+						body: "I loved this game too!",
+						review_id: 2,
+						author: "bainesface",
+						votes: 16,
+						created_at: "2017-11-22T12:43:33.389Z",
+					},
+					{
+						comment_id: 4,
+						body: "EPIC board game!",
+						review_id: 2,
+						author: "bainesface",
+						votes: 16,
+						created_at: "2017-11-22T12:36:03.389Z",
+					},
+					{
+						comment_id: 5,
+						body: "Now this is a story all about how, board games turned my life upside down",
+						review_id: 2,
+						author: "mallionaire",
+						votes: 13,
+						created_at: "2021-01-18T10:24:05.410Z",
+					},
+				];
+				expect(body.comments).toEqual(expected);
+			});
+	});
+	test("if a valid review_id has no comments, return an appropriate response", () => {
+		return request(app)
+			.get("/api/reviews/1/comments")
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.msg).toBe("No comment found");
+			});
+	});
+	test("if given a review_id that's too high, return an appropriate response", () => {
+		return request(app)
+			.get("/api/reviews/1000/comments")
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.msg).toBe("No review found");
+			});
+	});
+	test("if given an invalid review_id, return an appropriate response", () => {
+		return request(app)
+			.get("/api/reviews/banana/comments")
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.msg).toBe("Bad Request!");
+			});
+	});
+});
