@@ -50,33 +50,6 @@ exports.fetchUsers = () => {
 	});
 };
 
-// exports.fetchReviews = () => {
-// 	return db
-// 		.query(
-// 			"SELECT * FROM comments RIGHT JOIN reviews ON comments.review_id=reviews.review_id"
-// 		)
-// 		.then(({ rows }) => {
-// 			rows.forEach((row) => {
-// 				row.comment_count = 0;
-// 			});
-// 			console.log(rows);
-// 			return rows;
-// 		})
-// 		.then((body) => {
-// 			const reviews = body;
-// 			return db.query(`SELECT * from comments`).then(({ rows }) => {
-// 				rows.forEach((row) => {
-// 					for (let i = 0; i < reviews.length; i++) {
-// 						if (row.review_id === reviews[i].review_id) {
-// 							reviews[i].comment_count++;
-// 						}
-// 					}
-// 				});
-// 				return reviews;
-// 			});
-// 		});
-// };
-
 exports.fetchReviews = () => {
 	return db
 		.query(
