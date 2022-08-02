@@ -35,3 +35,7 @@ added the get /api/reviews endpoint and tested it to confirm it returns the corr
 ### GET /api/reviews/:review_id/comments
 
 added the get /api/reviews/:review_id/comments endpoint and tested it to confirm it returns the correct values, also added tests for error handling for this endpoint
+
+### POST /api/reviews/:review_id/comments
+
+added the post /api/reviews/:review_id/comments endpoint and tested it to confirm it returns the correct values, also added tests for error handling for this endpoint
