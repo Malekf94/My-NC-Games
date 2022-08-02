@@ -53,16 +53,16 @@ describe("GET /api/reviews/:review_id", () => {
 		return request(app)
 			.get("/api/reviews/90")
 			.expect(404)
-			.then(({ _body }) => {
-				expect(_body.msg).toBe("No review found");
+			.then(({ body }) => {
+				expect(body.msg).toBe("No review found");
 			});
 	});
 	test("when given an invalid review_id, return an appropriate error", () => {
 		return request(app)
 			.get("/api/reviews/banana")
 			.expect(400)
-			.then(({ _body }) => {
-				expect(_body.msg).toBe("Bad Request!");
+			.then(({ body }) => {
+				expect(body.msg).toBe("Bad Request!");
 			});
 	});
 });
@@ -113,8 +113,8 @@ describe("PATCH /api/reviews/:review_id", () => {
 			.patch("/api/reviews/90")
 			.send({ inc_votes: 5 })
 			.expect(404)
-			.then(({ _body }) => {
-				expect(_body.msg).toBe("No review found");
+			.then(({ body }) => {
+				expect(body.msg).toBe("No review found");
 			});
 	});
 	test("when given an invalid review_id, return an appropriate error", () => {
@@ -122,8 +122,8 @@ describe("PATCH /api/reviews/:review_id", () => {
 			.patch("/api/reviews/banana")
 			.send({ inc_votes: 5 })
 			.expect(400)
-			.then(({ _body }) => {
-				expect(_body.msg).toBe("Bad Request!");
+			.then(({ body }) => {
+				expect(body.msg).toBe("Bad Request!");
 			});
 	});
 	test("when given an invalid inc_votes input, return an appropriate error", () => {
@@ -131,8 +131,22 @@ describe("PATCH /api/reviews/:review_id", () => {
 			.patch("/api/reviews/1")
 			.send({ inc_votes: "apple" })
 			.expect(400)
-			.then(({ _body }) => {
-				expect(_body.msg).toBe("Bad Request!");
+			.then(({ body }) => {
+				expect(body.msg).toBe("Bad Request!");
+			});
+	});
+});
+
+describe("GET /api/users", () => {
+	test("an array of objects, each object should have the following properties:username, name, avatar_url", () => {
+		return request(app)
+			.get("/api/users")
+			.expect(200)
+			.then(({ body }) => {
+				const expected = ["username", "name", "avatar_url"];
+				body["users"].forEach((user) => {
+					expect(Object.keys(user)).toEqual(expect.arrayContaining(expected));
+				});
 			});
 	});
 });
