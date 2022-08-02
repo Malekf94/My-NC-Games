@@ -23,3 +23,7 @@ added the patch /api/reviews/:review_id endpoint and tested it to confirm it ret
 ### GET /api/users
 
 added the get /api/users endpoint and tested it to confirm it returns the correct values
+
+### GET /api/reviews/:review_id
+
+refactored the endpoint to have the result include the key 'comment_count'

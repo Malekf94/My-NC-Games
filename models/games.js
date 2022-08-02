@@ -15,6 +15,15 @@ exports.fetchReview = (review_id) => {
 					msg: `No review found`,
 				});
 			} else return rows[0];
+		})
+		.then((body) => {
+			const review = body;
+			return db
+				.query(`SELECT * from comments WHERE review_id=$1`, [review_id])
+				.then(({ rows }) => {
+					review.comment_count = rows.length;
+					return review;
+				});
 		});
 };
 
