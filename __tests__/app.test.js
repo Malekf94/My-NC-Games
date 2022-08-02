@@ -136,3 +136,18 @@ describe("PATCH /api/reviews/:review_id", () => {
 			});
 	});
 });
+
+describe("GET /api/users", () => {
+	test("an array of objects, each object should have the following properties:username,	name, avatar_url ", () => {
+		return request(app)
+			.get("/api/users")
+			.expect(200)
+			.then(({ body }) => {
+				console.log(body);
+				const expected = ["username", "name", "avatar_url"];
+				body["users"].forEach((user) => {
+					expect(Object.keys(user)).toEqual(expect.arrayContaining(expected));
+				});
+			});
+	});
+});

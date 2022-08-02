@@ -19,3 +19,7 @@ added the get /api/reviews/:review_id endpoint and tested it to confirm it retur
 ### PATCH /api/reviews/:review_id
 
 added the patch /api/reviews/:review_id endpoint and tested it to confirm it returns the correct values, also added tests for error handling for this endpoint
+
+### GET /api/users
+
+added the get /api/users endpoint and tested it to confirm it returns the correct values

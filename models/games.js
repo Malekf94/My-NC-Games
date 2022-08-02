@@ -33,3 +33,9 @@ exports.updateReview = (review_id, inc_votes) => {
 			} else return rows[0];
 		});
 };
+
+exports.fetchUsers = () => {
+	return db.query("SELECT * from users").then(({ rows }) => {
+		return rows;
+	});
+};

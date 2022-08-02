@@ -1,7 +1,9 @@
+const users = require("../db/data/test-data/users");
 const {
 	fetchCategories,
 	fetchReview,
 	updateReview,
+	fetchUsers,
 } = require("../models/games");
 
 exports.getCategories = (req, res, next) => {
@@ -31,4 +33,10 @@ exports.patchReview = (req, res, next) => {
 		.catch((err) => {
 			if (err) next(err);
 		});
+};
+
+exports.getUsers = (req, res, next) => {
+	fetchUsers().then((users) => {
+		res.status(200).send({ users });
+	});
 };
