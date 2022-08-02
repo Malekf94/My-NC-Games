@@ -31,3 +31,7 @@ refactored the endpoint to have the result include the key 'comment_count'
 ### GET /api/reviews
 
 added the get /api/reviews endpoint and tested it to confirm it returns the correct values, also refactored the naming for controller and model for GET /api/reviews/:review_id to avoid confusion
+
+### GET /api/reviews/:review_id/comments
+
+added the get /api/reviews/:review_id/comments endpoint and tested it to confirm it returns the correct values, also added tests for error handling for this endpoint
