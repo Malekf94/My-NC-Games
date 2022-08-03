@@ -124,9 +124,5 @@ exports.addCommentById = (review_id, newComment) => {
 		.then(({ rows }) => {
 			return rows;
 		});
-	return Promise.all([valid_id, valid_username, insertedComment]).then(
-		(values) => {
-			return values[2];
-		}
-	);
+	return Promise.all([valid_id, valid_username, insertedComment]);
 };

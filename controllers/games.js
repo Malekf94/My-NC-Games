@@ -64,8 +64,8 @@ exports.getReviewCommentsById = (req, res, next) => {
 exports.postCommentByID = (req, res, next) => {
 	const { review_id } = req.params;
 	addCommentById(review_id, req.body)
-		.then(([comment]) => {
-			res.status(201).send({ comment });
+		.then((comment) => {
+			res.status(201).send({ comment: comment[2][0] });
 		})
 		.catch(next);
 };
