@@ -265,3 +265,60 @@ describe("GET /api/review/:review_id/comments", () => {
 			});
 	});
 });
+
+describe("POST /api/reviews/:review_id/comments", () => {
+	test("request body accepts an object with the keys username and body and responds with the posted comment", () => {
+		const postedComment = { username: "mallionaire", body: "random words" };
+		return request(app)
+			.post("/api/reviews/1/comments")
+			.send(postedComment)
+			.expect(201)
+			.then(({ body }) => {
+				const expected = {
+					body: "random words",
+					author: "mallionaire",
+				};
+				expect(body.comment).toEqual(expect.objectContaining(expected));
+			});
+	});
+	test("if given a review_id that's too high, return an appropriate response", () => {
+		const postedComment = { username: "mallionaire", body: "random words" };
+		return request(app)
+			.post("/api/reviews/1000/comments")
+			.send(postedComment)
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.msg).toBe("No review found");
+			});
+	});
+	test("if given an invalid Id, return an appropriate response", () => {
+		const postedComment = { username: "mallionaire", body: "random words" };
+		return request(app)
+			.post("/api/reviews/banana/comments")
+			.send(postedComment)
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.msg).toBe("Bad Request!");
+			});
+	});
+	test("if given a valid Id, but missing keys in the posted comment, return an appropriate response", () => {
+		const postedComment = { username: "mallionaire" };
+		return request(app)
+			.post("/api/reviews/1/comments")
+			.send(postedComment)
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.msg).toBe("post missing username/body");
+			});
+	});
+	test("if given an invalid username, return an appropriate response", () => {
+		const postedComment = { username: "malek", body: "random words" };
+		return request(app)
+			.post("/api/reviews/1/comments")
+			.send(postedComment)
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.msg).toBe("Username Not Found");
+			});
+	});
+});

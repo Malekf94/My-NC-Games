@@ -86,3 +86,43 @@ exports.fetchReviewCommentsById = (review_id) => {
 		return values[1];
 	});
 };
+
+exports.addCommentById = (review_id, newComment) => {
+	const newUsername = newComment.username;
+	const newBody = newComment.body;
+	if (!newUsername || !newBody) {
+		return Promise.reject({
+			status: 400,
+			msg: "post missing username/body",
+		});
+	}
+	const valid_id = db
+		.query(`SELECT * from reviews WHERE review_id=$1`, [review_id])
+		.then(({ rows }) => {
+			if (rows[0] === undefined) {
+				return Promise.reject({
+					status: 404,
+					msg: `No review found`,
+				});
+			} else return rows[0];
+		});
+	const valid_username = db
+		.query(`SELECT * from comments WHERE author=$1`, [newUsername])
+		.then(({ rows }) => {
+			if (rows[0] === undefined) {
+				return Promise.reject({
+					status: 404,
+					msg: `Username Not Found`,
+				});
+			} else return rows[0];
+		});
+	const insertedComment = db
+		.query(
+			`INSERT INTO comments(review_id, author, body) VALUES ($1, $2, $3) RETURNING *;`,
+			[review_id, newUsername, newBody]
+		)
+		.then(({ rows }) => {
+			return rows;
+		});
+	return Promise.all([valid_id, valid_username, insertedComment]);
+};
