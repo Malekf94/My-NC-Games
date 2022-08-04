@@ -57,7 +57,20 @@
 	"PATCH /api/reviews/:review_id": {
 		"description": "takes an object detailing the increase/decrease of votes and applies that to the vote count of the specified review_id",
 		"queries": [],
-		"examplePatchBody": { "inc_votes": 5 },
+		"exampleRequest": { "inc_votes": 5 },
+		"exampleBodyBeforePatch": {
+			"review_id": 1,
+			"title": "Agricola",
+			"category": "euro game",
+			"designer": "Uwe Rosenberg",
+			"owner": "mallionaire",
+			"review_body": "Farmyard fun!",
+			"review_img_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png",
+			"created_at": "2021-01-18T10:00:20.514Z",
+			"votes": 1,
+			"comment_count": 0
+		},
+
 		"exampleApi": "/api/reviews/1",
 		"exampleResponseForAboveApi": {
 			"review": {
@@ -138,7 +151,7 @@
 	"POST /api/reviews/:review_id/comments": {
 		"description": "takes an object containing username and body as keys and adds it as a comment to a particular review_ID and responds with the added comment",
 		"queries": [],
-		"exampleInput": { "username": "mallionaire", "body": "random words" },
+		"exampleRequest": { "username": "mallionaire", "body": "random words" },
 		"exampleApi": "/api/reviews/2/comments",
 		"exampleResponseForAboveApi": {
 			"comment": {
