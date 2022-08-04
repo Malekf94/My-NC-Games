@@ -9,7 +9,7 @@ const {
 	addCommentById,
 	removeCommentById,
 } = require("../models/games");
-
+const { listOfApis } = require("../endpoints.json");
 exports.getCategories = (req, res, next) => {
 	fetchCategories().then((categories) => {
 		res.status(200).send({ categories });
@@ -81,4 +81,8 @@ exports.deleteCommentById = (req, res, next) => {
 			res.sendStatus(204);
 		})
 		.catch(next);
+};
+
+exports.getApi = (req, res, next) => {
+	res.status(200).send({ listOfApis });
 };
