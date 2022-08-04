@@ -160,7 +160,7 @@ describe("GET /api/users", () => {
 });
 
 describe("GET /api/reviews", () => {
-	test("a reviews array of review objects, each of which should have the following properties:	owner (which is the username from the users table), title, review_id, category, review_img_url, created_at, votes, designer and comment_count", () => {
+	test("a reviews array of review objects, each of which should have the following properties:owner (which is the username from the users table), title, review_id, category, review_img_url, created_at, votes, designer and comment_count", () => {
 		return request(app)
 			.get("/api/reviews")
 			.expect(200)
@@ -201,6 +201,63 @@ describe("GET /api/reviews", () => {
 					comment_count: "0",
 				};
 				expect(body.reviews[0]).toEqual(expected);
+			});
+	});
+	test("should sort the data by any valid column, with date as the default value and Descending as the default order value", () => {
+		return request(app)
+			.get("/api/reviews?sort_by=designer")
+			.expect(200)
+			.then(({ body }) => {
+				const expected = { designer: "Wolfgang Warsch" };
+				expect(body.reviews[0]).toEqual(expect.objectContaining(expected));
+			});
+	});
+	test("should sort by title and ascending order value", () => {
+		return request(app)
+			.get("/api/reviews?order=asc&sort_by=title")
+			.expect(200)
+			.then(({ body }) => {
+				const expected = {
+					title: "Agricola",
+				};
+				expect(body.reviews[0]).toEqual(expect.objectContaining(expected));
+			});
+	});
+	test("should filter by the catergory specified", () => {
+		return request(app)
+			.get("/api/reviews?category=dexterity")
+			.expect(200)
+			.then(({ body }) => {
+				const expected = {
+					category: "dexterity",
+				};
+				body["reviews"].forEach((review) => {
+					expect(review).toEqual(expect.objectContaining(expected));
+				});
+			});
+	});
+	test("when given an invalid category query, return an appropriate response", () => {
+		return request(app)
+			.get("/api/reviews?category=bananas")
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.msg).toBe("bananas was not found in column category");
+			});
+	});
+	test("when given an invalid sort_by query, return an appropriate response", () => {
+		return request(app)
+			.get("/api/reviews?sort_by=apples")
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.msg).toBe("invalid sort_by query");
+			});
+	});
+	test("when given an invalid sort_by query, return an appropriate response", () => {
+		return request(app)
+			.get("/api/reviews?order=jumbled")
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.msg).toBe("invalid order input");
 			});
 	});
 });
@@ -288,7 +345,7 @@ describe("POST /api/reviews/:review_id/comments", () => {
 			.send(postedComment)
 			.expect(404)
 			.then(({ body }) => {
-				expect(body.msg).toBe("No review found");
+				expect(body.msg).toBe("1000 was not found in column review_id");
 			});
 	});
 	test("if given an invalid Id, return an appropriate response", () => {

@@ -50,14 +50,46 @@ exports.fetchUsers = () => {
 	});
 };
 
-exports.fetchReviews = () => {
-	return db
-		.query(
-			"SELECT reviews.*, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments ON reviews.review_id=comments.review_id GROUP BY reviews.review_id ORDER BY reviews.created_at DESC"
-		)
-		.then(({ rows }) => {
-			return rows;
+exports.fetchReviews = (sort_by = "created_at", order = "DESC", category) => {
+	const queryValue = [];
+	const sortByProperties = [
+		"owner",
+		"title",
+		"review_id",
+		"category",
+		"review_img_url",
+		"created_at",
+		"votes",
+		"designer",
+		"comment_count",
+	];
+	if (!sortByProperties.includes(sort_by)) {
+		return Promise.reject({
+			status: 400,
+			msg: "invalid sort_by query",
 		});
+	}
+	if (order.toUpperCase() != "ASC" && order.toUpperCase() != "DESC") {
+		return Promise.reject({
+			status: 400,
+			msg: "invalid order input",
+		});
+	}
+	let queryStr = `SELECT reviews.*, COUNT(comment_id) AS comment_count FROM reviews LEFT JOIN comments 
+	ON reviews.review_id=comments.review_id `;
+	if (category !== undefined) {
+		queryValue.push(category);
+		queryStr += `WHERE reviews.category = $1 `;
+	}
+	queryStr += `GROUP BY reviews.review_id ORDER BY ${sort_by} ${order}`;
+
+	const fetchQuery = db.query(queryStr, queryValue).then(({ rows }) => {
+		return rows;
+	});
+	if (category !== undefined) {
+		const checkingCategory = validityCheck("reviews", "category", category);
+		return Promise.all([checkingCategory, fetchQuery]);
+	} else return Promise.all([fetchQuery, fetchQuery]);
 };
 
 exports.fetchReviewCommentsById = (review_id) => {
@@ -96,16 +128,7 @@ exports.addCommentById = (review_id, newComment) => {
 			msg: "post missing username/body",
 		});
 	}
-	const valid_id = db
-		.query(`SELECT * from reviews WHERE review_id=$1`, [review_id])
-		.then(({ rows }) => {
-			if (rows[0] === undefined) {
-				return Promise.reject({
-					status: 404,
-					msg: `No review found`,
-				});
-			} else return rows[0];
-		});
+	const valid_id = validityCheck("reviews", "review_id", review_id);
 	const valid_username = db
 		.query(`SELECT * from comments WHERE author=$1`, [newUsername])
 		.then(({ rows }) => {
@@ -125,4 +148,16 @@ exports.addCommentById = (review_id, newComment) => {
 			return rows;
 		});
 	return Promise.all([valid_id, valid_username, insertedComment]);
+};
+
+const validityCheck = (dataFile, column, property) => {
+	const queryStr = `SELECT * FROM ${dataFile} WHERE ${column}=$1`;
+	return db.query(queryStr, [property]).then(({ rows }) => {
+		if (rows[0] === undefined) {
+			return Promise.reject({
+				status: 404,
+				msg: `${property} was not found in column ${column}`,
+			});
+		} else return rows[0];
+	});
 };
