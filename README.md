@@ -47,3 +47,7 @@ Refactored the get /api/reviews endpoint to include queries for sort_by, order a
 ### DELETE /api/comments/:comment_id
 
 added the delete /api/comments/:comment_id endpoint and tested it to confirm it returns the correct values, also added tests for error handling for this endpoint
+
+### GET /api
+
+added the get /api endpoint that returns a json object of all the endpoints and what they do

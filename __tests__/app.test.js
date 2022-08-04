@@ -3,6 +3,7 @@ const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
 const data = require("../db/data/test-data");
+const { listOfApis } = require("../endpoints.json");
 
 afterAll(() => {
 	return db.end();
@@ -398,6 +399,17 @@ describe("DELETE /api/comments/:comment_id", () => {
 			.expect(404)
 			.then(({ body }) => {
 				expect(body.msg).toBe("9001 was not found in column comment_id");
+			});
+	});
+});
+
+describe("GET /api", () => {
+	test("returns a JSON object describing all available endpoints", () => {
+		return request(app)
+			.get("/api")
+			.expect(200)
+			.then((body) => {
+				expect(body.listOfApis).toEqual(listOfApis);
 			});
 	});
 });
