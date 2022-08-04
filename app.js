@@ -9,12 +9,14 @@ const {
 	postCommentByID,
 	deleteCommentById,
 	getApi,
+	welcomePage,
 } = require("./controllers/games");
 
 const app = express();
 
 app.use(express.json());
 
+app.get("/", welcomePage);
 app.get("/api/categories", getCategories);
 app.get("/api/reviews/:review_id", getReviewById);
 app.patch("/api/reviews/:review_id", patchReview);

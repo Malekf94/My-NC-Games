@@ -86,3 +86,12 @@ exports.deleteCommentById = (req, res, next) => {
 exports.getApi = (req, res, next) => {
 	res.status(200).send({ listOfApis });
 };
+
+exports.welcomePage = (req, res, next) => {
+	res
+		.status(200)
+		.send({
+			Welcome:
+				"visit the /api endpoint to see all potential endpoints that can be used",
+		});
+};
