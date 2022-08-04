@@ -3,7 +3,7 @@ const request = require("supertest");
 const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
 const data = require("../db/data/test-data");
-const { listOfApis } = require("../endpoints.json");
+const listOfApis = require("../endpoints.json");
 
 afterAll(() => {
 	return db.end();
@@ -408,7 +408,7 @@ describe("GET /api", () => {
 		return request(app)
 			.get("/api")
 			.expect(200)
-			.then((body) => {
+			.then(({ body }) => {
 				expect(body.listOfApis).toEqual(listOfApis);
 			});
 	});

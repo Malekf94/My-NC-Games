@@ -9,7 +9,7 @@ const {
 	addCommentById,
 	removeCommentById,
 } = require("../models/games");
-const { listOfApis } = require("../endpoints.json");
+const listOfApis = require("../endpoints.json");
 exports.getCategories = (req, res, next) => {
 	fetchCategories().then((categories) => {
 		res.status(200).send({ categories });
