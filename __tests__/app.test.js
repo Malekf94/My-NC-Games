@@ -379,3 +379,25 @@ describe("POST /api/reviews/:review_id/comments", () => {
 			});
 	});
 });
+
+describe("DELETE /api/comments/:comment_id", () => {
+	test("delete the given comment by comment_id", () => {
+		return request(app).delete("/api/comments/1").expect(204);
+	});
+	test("if given an invalid Id, return an appropriate response", () => {
+		return request(app)
+			.delete("/api/comments/banana")
+			.expect(400)
+			.then(({ body }) => {
+				expect(body.msg).toBe("Bad Request!");
+			});
+	});
+	test("if given an Id that's too high, return an appropriate response", () => {
+		return request(app)
+			.delete("/api/comments/9001")
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.msg).toBe("9001 was not found in column comment_id");
+			});
+	});
+});

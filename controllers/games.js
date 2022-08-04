@@ -7,6 +7,7 @@ const {
 	fetchReviews,
 	fetchReviewCommentsById,
 	addCommentById,
+	removeCommentById,
 } = require("../models/games");
 
 exports.getCategories = (req, res, next) => {
@@ -69,6 +70,15 @@ exports.postCommentByID = (req, res, next) => {
 	addCommentById(review_id, req.body)
 		.then((comment) => {
 			res.status(201).send({ comment: comment[2][0] });
+		})
+		.catch(next);
+};
+
+exports.deleteCommentById = (req, res, next) => {
+	const { comment_id } = req.params;
+	removeCommentById(comment_id)
+		.then(() => {
+			res.sendStatus(204);
 		})
 		.catch(next);
 };
