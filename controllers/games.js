@@ -45,9 +45,12 @@ exports.getUsers = (req, res, next) => {
 };
 
 exports.getReviews = (req, res, next) => {
-	fetchReviews().then((reviews) => {
-		res.status(200).send({ reviews });
-	});
+	const { sort_by, order, category } = req.query;
+	fetchReviews(sort_by, order, category)
+		.then((reviews) => {
+			res.status(200).send({ reviews: reviews[1] });
+		})
+		.catch(next);
 };
 
 exports.getReviewCommentsById = (req, res, next) => {

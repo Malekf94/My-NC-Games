@@ -23,6 +23,7 @@ app.post("/api/reviews/:review_id/comments", postCommentByID);
 
 //////////////////////////////////////////
 app.use((err, req, res, next) => {
+	// console.log(err);
 	if (err.status && err.msg) {
 		res.status(err.status).send({ msg: err.msg });
 	} else if (err.code === "22P02") {
