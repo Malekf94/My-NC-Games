@@ -150,6 +150,15 @@ exports.addCommentById = (review_id, newComment) => {
 	return Promise.all([valid_id, valid_username, insertedComment]);
 };
 
+exports.removeCommentById = (comment_id) => {
+	const commentdIDCheck = validityCheck("comments", "comment_id", comment_id);
+	const commentQuery = db.query("DELETE FROM comments WHERE comment_id=$1", [
+		comment_id,
+	]);
+	return Promise.all([commentdIDCheck, commentQuery]);
+};
+
+//////////////////////////////////////////////////////////
 const validityCheck = (dataFile, column, property) => {
 	const queryStr = `SELECT * FROM ${dataFile} WHERE ${column}=$1`;
 	return db.query(queryStr, [property]).then(({ rows }) => {

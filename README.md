@@ -43,3 +43,7 @@ added the post /api/reviews/:review_id/comments endpoint and tested it to confir
 ### GET /api/reviews
 
 Refactored the get /api/reviews endpoint to include queries for sort_by, order and category. Tested the query endpoints as well as adding and testing error handling. Added a function in models to test to see whether an input is in a given column and used that to refactor the POST /api/reviews/:review_id/comments endpoint
+
+### DELETE /api/comments/:comment_id
+
+added the delete /api/comments/:comment_id endpoint and tested it to confirm it returns the correct values, also added tests for error handling for this endpoint

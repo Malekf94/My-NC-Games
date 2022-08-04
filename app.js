@@ -7,6 +7,7 @@ const {
 	getReviews,
 	getReviewCommentsById,
 	postCommentByID,
+	deleteCommentById,
 } = require("./controllers/games");
 
 const app = express();
@@ -20,6 +21,7 @@ app.get("/api/users", getUsers);
 app.get("/api/reviews", getReviews);
 app.get("/api/reviews/:review_id/comments", getReviewCommentsById);
 app.post("/api/reviews/:review_id/comments", postCommentByID);
+app.delete("/api/comments/:comment_id", deleteCommentById);
 
 //////////////////////////////////////////
 app.use((err, req, res, next) => {
