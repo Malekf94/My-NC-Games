@@ -6,6 +6,38 @@ To access the database, create two .env files for this project: '.env.test' and 
 add PGDATABASE=nc_games to the .env.development file and
 add PGDATABASE=nc_games_test to the .env.test file
 
+## Link to hosted version
+
+https://my-games-project.herokuapp.com/
+
+## Project Summary
+
+This project is about creating a database regarding boardgames and interacting with the endpoints that we have regarding their reviews, comments and users.
+
+## Instructions on how to use the data
+
+To fork the repo, go to my github link and click fork, after you have forked it to your device, you'll need to install the following modules:-
+
+- Dotenv
+- Express
+- pg
+- pg-format
+  and
+- supertest
+
+For testing purposes, I have also used jest, jest-extended and jest-sorted.
+
+Before using the data, you'll need to setup the database by running npm run setup-dbs then npm run seed
+
+To run the tests to see that the database is functioning correctly, run:-
+
+- npm test for both files or
+- npm test utils.test.js for the utility function
+  or
+- npm test app.test.js for the app and server endpoints.
+
+## Minimum node version 16.x.x and psql version 14.x required
+
 ## Adding Endpoints
 
 ### GET /api/categories
@@ -51,33 +83,3 @@ added the delete /api/comments/:comment_id endpoint and tested it to confirm it 
 ### GET /api
 
 added the get /api endpoint that returns a json object of all the endpoints and what they do
-
-### Link to hosted version
-
-https://my-games-project.herokuapp.com/
-
-### Project Summary
-
-This project is about a database regarding boardgames, we have endpoints regarding their reviews, comments and users.
-
-### Instructions on how to use the data
-
-To fork the repo, go to my github link and click fork, after you have forked it to your device, you'll need to install the following modules:-
-
-- Dotenv
-- Express
-- pg
-- pg-format
-  and
-- supertest
-
-For testing purposes, I have also used jest, jest-extended and jest-sorted.
-
-Before using the data, you'll need to setup the database by running npm run setup-dbs then npm run seed
-
-To run the tests to see that the database is functioning correctly, run:-
-
-- npm test for both files or
-- npm test utils.test.js for the utility function
-  or
-- npm test app.test.js for the app and server endpoints.
