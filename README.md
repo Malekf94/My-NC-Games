@@ -83,3 +83,7 @@ added the delete /api/comments/:comment_id endpoint and tested it to confirm it 
 ### GET /api
 
 added the get /api endpoint that returns a json object of all the endpoints and what they do
+
+### Routers
+
+Refactored the app.js file to use routers to handle the endpoint requests
