@@ -158,6 +158,16 @@ exports.removeCommentById = (comment_id) => {
 	return Promise.all([commentdIDCheck, commentQuery]);
 };
 
+exports.fetchUserByName = (username) => {
+	const userNameCheck = validityCheck("users", "username", username);
+	const fetchQuery = db
+		.query(`SELECT * FROM users WHERE username=$1`, [username])
+		.then(({ rows }) => {
+			return rows[0];
+		});
+	return Promise.all([userNameCheck, fetchQuery]);
+};
+
 //////////////////////////////////////////////////////////
 const validityCheck = (dataFile, column, property) => {
 	const queryStr = `SELECT * FROM ${dataFile} WHERE ${column}=$1`;

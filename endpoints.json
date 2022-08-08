@@ -70,7 +70,6 @@
 			"votes": 1,
 			"comment_count": 0
 		},
-
 		"exampleApi": "/api/reviews/1",
 		"exampleResponseForAboveApi": {
 			"review": {
@@ -168,5 +167,17 @@
 		"description": "deletes a comment from the inputted comment_id, no content is returned to the user",
 		"queries": [],
 		"exampleApi": "/api/reviews/1/comments"
+	},
+	"GET /api/users/:username": {
+		"description": "serves a user object with the keys:- username, avatar_url and name for the given username",
+		"queries": [],
+		"exampleApi": "/api/users/bainesface",
+		"exampleResponse": {
+			"userData": {
+				"username": "bainesface",
+				"name": "sarah",
+				"avatar_url": "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4"
+			}
+		}
 	}
 }

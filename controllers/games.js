@@ -8,6 +8,7 @@ const {
 	fetchReviewCommentsById,
 	addCommentById,
 	removeCommentById,
+	fetchUserByName,
 } = require("../models/games");
 const listOfApis = require("../endpoints.json");
 exports.getCategories = (req, res, next) => {
@@ -88,10 +89,17 @@ exports.getApi = (req, res, next) => {
 };
 
 exports.welcomePage = (req, res, next) => {
-	res
-		.status(200)
-		.send({
-			Welcome:
-				"visit the /api endpoint to see all potential endpoints that can be used",
-		});
+	res.status(200).send({
+		Welcome:
+			"visit the /api endpoint to see all potential endpoints that can be used",
+	});
+};
+
+exports.getUserByName = (req, res, next) => {
+	const { username } = req.params;
+	fetchUserByName(username)
+		.then((userData) => {
+			res.status(200).send({ userData: userData[1] });
+		})
+		.catch(next);
 };

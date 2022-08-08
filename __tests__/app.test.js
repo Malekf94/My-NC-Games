@@ -413,3 +413,28 @@ describe("GET /api", () => {
 			});
 	});
 });
+
+describe("GET /api/users/:username", () => {
+	test("returns a user object with the keys:- username, avatar_url and name", () => {
+		return request(app)
+			.get("/api/users/bainesface")
+			.expect(200)
+			.then(({ body }) => {
+				const expected = {
+					username: "bainesface",
+					name: "sarah",
+					avatar_url:
+						"https://avatars2.githubusercontent.com/u/24394918?s=400&v=4",
+				};
+				expect(body.userData).toEqual(expected);
+			});
+	});
+	test("when given an invalid username, return an appropriate response", () => {
+		return request(app)
+			.get("/api/users/malek")
+			.expect(404)
+			.then(({ body }) => {
+				expect(body.msg).toBe("malek was not found in column username");
+			});
+	});
+});

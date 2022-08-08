@@ -86,4 +86,8 @@ added the get /api endpoint that returns a json object of all the endpoints and 
 
 ### Routers
 
-Refactored the app.js file to use routers to handle the endpoint requests
+Refactored the app.js file to use routers to handle the endpoint requests+
+
+### GET /api/users/:username
+
+added the post /api/users/:username endpoint and tested it to confirm it returns the correct values, also added tests for error handling for this endpoint
